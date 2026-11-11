@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>廣播講稿工作室</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a studio console. The left column is the cue sheet (節目流程表), the right column is the script on paper. */
+:root{
+  --bg:#EEF1F0; --panel:#FFFFFF; --paper:#FCFCF9; --ink:#1C2A2E; --muted:#5E6E72; --line:#D5DCDB;
+  --onair:#D2432C; --onair-soft:#FBE6E1;
+  --hostA:#1D7586; --hostA-soft:#E0F0F2; --hostB:#A86A12; --hostB-soft:#F7EBD6; --both:#6B4FA0; --both-soft:#ECE6F5;
+  --focus:#1D7586;
+  --f-display:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121A1C; --panel:#1A2427; --paper:#1E2A2D; --ink:#E4ECEC; --muted:#9AAAAD; --line:#2E3C40;
+  --onair:#F0674F; --onair-soft:#3A2420;
+  --hostA:#5CC2D3; --hostA-soft:#163238; --hostB:#E3A64B; --hostB-soft:#382A16; --both:#B49BE6; --both-soft:#2A2338;
+  --focus:#5CC2D3; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121A1C; --panel:#1A2427; --paper:#1E2A2D; --ink:#E4ECEC; --muted:#9AAAAD; --line:#2E3C40;
+  --onair:#F0674F; --onair-soft:#3A2420;
+  --hostA:#5CC2D3; --hostA-soft:#163238; --hostB:#E3A64B; --hostB-soft:#382A16; --both:#B49BE6; --both-soft:#2A2338;
+  --focus:#5CC2D3; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header.top{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.lamp{display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;
+  color:var(--onair);border:1.5px solid var(--onair);border-radius:4px;padding:3px 9px}
+.lamp i{width:8px;height:8px;border-radius:50%;background:var(--onair);box-shadow:0 0 0 3px var(--onair-soft)}
+.lamp.live i{animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.lamp.live i{animation:none}}
+h1{font-family:var(--f-display);font-weight:900;font-size:clamp(24px,3.4vw,34px);margin:0;letter-spacing:.02em;text-wrap:balance}
+.sub{color:var(--muted);margin:0;flex-basis:100%;max-width:62ch}
+.grid{display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:minmax(0,1fr)}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.panel h2{font-family:var(--f-display);font-size:18px;margin:0;display:flex;align-items:baseline;gap:10px}
+.panel h2 small{font-family:var(--f-body);font-weight:400;font-size:12px;color:var(--muted)}
+.eyebrow{font-family:var(--f-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+label{font-size:13px;font-weight:500;display:flex;flex-direction:column;gap:5px}
+label .hint{font-weight:400;color:var(--muted);font-size:12px}
+input[type=text],textarea,select{font:inherit;font-size:14px;color:var(--ink);background:var(--paper);border:1px solid var(--line);
+  border-radius:7px;padding:8px 10px;width:100%;min-width:0}
+textarea{resize:vertical;min-height:64px;line-height:1.55}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:440px){.row2{grid-template-columns:1fr}}
+.host{border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.host.a{background:var(--hostA-soft)} .host.b{background:var(--hostB-soft)}
+.host .tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em}
+.host.a .tag{color:var(--hostA)} .host.b .tag{color:var(--hostB)}
+.segs{display:flex;flex-direction:column;gap:10px;counter-reset:seg}
+.seg{border:1px solid var(--line);border-radius:8px;background:var(--paper);display:flex;flex-direction:column}
+.seg.off{opacity:.55}
+.seg.off .seg-body{display:none}
+.seg-head{display:flex;align-items:center;gap:8px;padding:9px 10px}
+.seg-head input[type=checkbox]{width:18px;height:18px;accent-color:var(--onair);flex:none}
+.seg-no{font-family:var(--f-mono);font-size:12px;color:var(--onair);min-width:2.2em}
+.seg:not(.off) .seg-no::before{counter-increment:seg;content:counter(seg,decimal-leading-zero)}
+.seg.off .seg-no::before{content:"—"}
+.seg-title{font-weight:700;flex:1;min-width:0;border:none;background:transparent;padding:2px 4px;font-size:14px}
+.seg-title:hover{background:var(--bg)}
+.mv{border:none;background:none;color:var(--muted);cursor:pointer;font-size:14px;padding:4px 6px;border-radius:5px}
+.mv:hover{background:var(--bg);color:var(--ink)}
+.seg-body{padding:0 10px 10px;display:flex;flex-direction:column;gap:8px}
+.btn{font:inherit;font-size:14px;font-weight:500;border-radius:7px;padding:9px 14px;cursor:pointer;border:1px solid var(--line);
+  background:var(--panel);color:var(--ink);display:inline-flex;align-items:center;gap:6px;justify-content:center}
+.btn:hover{border-color:var(--muted)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.primary{background:var(--onair);border-color:var(--onair);color:#fff;font-weight:700;font-size:15px;padding:12px 16px}
+.btn.primary:hover{filter:brightness(1.06)}
+.btn.small{font-size:13px;padding:6px 10px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.toolbar .sp{flex:1}
+.stats{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.stats b{color:var(--ink);font-family:var(--f-mono);font-weight:500}
+.balance{height:6px;border-radius:3px;overflow:hidden;display:flex;background:var(--line);min-width:120px;flex:1;max-width:220px;align-self:center}
+.balance span:first-child{background:var(--hostA)} .balance span:last-child{background:var(--hostB)}
+.status{font-size:13px;color:var(--muted);min-height:1.4em}
+.status.err{color:var(--onair)}
+.badge{font-size:11px;font-family:var(--f-mono);letter-spacing:.1em;padding:2px 7px;border-radius:4px;background:var(--both-soft);color:var(--both)}
+.script{background:var(--paper);border:1px solid var(--line);border-radius:8px;padding:22px clamp(14px,3vw,34px);min-height:420px;
+  display:flex;flex-direction:column;gap:6px;overflow-wrap:anywhere}
+.script .sec{font-family:var(--f-display);font-size:17px;font-weight:700;margin-top:18px;padding-bottom:4px;border-bottom:1px dashed var(--line);display:flex;gap:10px;align-items:baseline}
+.script .sec:first-child{margin-top:0}
+.script .sec::before{content:"＊";color:var(--onair)}
+.script .cue{font-family:var(--f-mono);font-size:12px;color:var(--onair);background:var(--onair-soft);align-self:flex-start;padding:2px 10px;border-radius:4px;margin:4px 0}
+.script .ln{display:grid;grid-template-columns:5.2em minmax(0,1fr);gap:10px;padding:3px 6px;border-radius:5px}
+.script .ln.speaking{background:var(--bg)}
+.script .who{font-weight:700;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.script .ln.a .who{color:var(--hostA)} .script .ln.b .who{color:var(--hostB)} .script .ln.both .who{color:var(--both)} .script .ln.other .who{color:var(--muted)}
+.script .ln.other .txt{color:var(--muted);font-style:italic}
+.script .ln .txt{max-width:62ch}
+.script .note{color:var(--muted);font-size:13px}
+.script .empty{color:var(--muted);text-align:center;margin:auto;max-width:34ch}
+.edit{font:inherit;font-size:14px;line-height:1.7;min-height:520px;background:var(--paper)}
+.revise{display:flex;gap:8px;flex-wrap:wrap}
+.revise input{flex:1;min-width:200px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font:inherit;font-size:12px;border:1px solid var(--line);background:var(--paper);color:var(--muted);border-radius:999px;padding:3px 10px;cursor:pointer}
+.chip:hover{color:var(--ink);border-color:var(--muted)}
+details.tips{border-top:1px solid var(--line);padding-top:12px}
+details.tips summary{cursor:pointer;font-weight:700;font-size:14px}
+details.tips ul{margin:10px 0 0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;font-size:13.5px;max-width:65ch}
+details.tips q{color:var(--hostA)}
+.fallback{background:var(--both-soft);border-radius:8px;padding:12px 14px;font-size:13.5px;display:flex;flex-direction:column;gap:8px}
+.fallback pre{white-space:pre-wrap;max-height:220px;overflow:auto;background:var(--paper);border:1px solid var(--line);border-radius:6px;padding:10px;font-size:12px;margin:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="lamp" id="lamp"><i></i>ON AIR</span>
+    <h1>廣播講稿工作室</h1>
+    <p class="sub">填好主持人和每個單元的關鍵字，就能產生兩位主持人的對話講稿。產生後可以直接修改，或告訴 AI 要怎麼改。</p>
+  </header>
+
+  <div class="grid">
+    <!-- LEFT: cue sheet -->
+    <form class="panel" id="form" autocomplete="off">
+      <h2>節目流程表 <small>右邊會依照這裡的順序寫講稿</small></h2>
+
+      <label>節目名稱
+        <input type="text" id="station" value="不可不讀廣播電台">
+      </label>
+
+      <div class="eyebrow">主持人</div>
+      <div class="host a">
+        <span class="tag">HOST A</span>
+        <div class="row2">
+          <label>名字<input type="text" id="aName" value="小晴"></label>
+          <label>個性
+            <select id="aPersona">
+              <option>愛吐槽、反應快</option><option>溫柔穩重、會收尾</option><option selected>活潑熱情、愛推坑</option>
+              <option>天然呆、常被吐槽</option><option>認真知識派</option><option>熱血運動系</option>
+            </select>
+          </label>
+        </div>
+        <label>自我介紹梗 <span class="hint">留空的話，AI 會用名字諧音幫你想</span>
+          <input type="text" id="aIntro" placeholder="例：晴天的晴，帶給你一整天好心情">
+        </label>
+      </div>
+      <div class="host b">
+        <span class="tag">HOST B</span>
+        <div class="row2">
+          <label>名字<input type="text" id="bName" value="阿哲"></label>
+          <label>個性
+            <select id="bPersona">
+              <option selected>愛吐槽、反應快</option><option>溫柔穩重、會收尾</option><option>活潑熱情、愛推坑</option>
+              <option>天然呆、常被吐槽</option><option>認真知識派</option><option>熱血運動系</option>
+            </select>
+          </label>
+        </div>
+        <label>自我介紹梗 <span class="hint">選填</span>
+          <input type="text" id="bIntro" placeholder="例：哲學的哲，今天也要用歪理說服你">
+        </label>
+      </div>
+
+      <div class="eyebrow">單元 <span style="letter-spacing:0;text-transform:none">· 勾選要播的單元，用 ↑↓ 調整順序</span></div>
+      <div class="segs" id="segs"></div>
+      <button type="button" class="btn small" id="addSeg">＋ 新增自訂單元</button>
+
+      <div class="eyebrow">風格</div>
+      <div class="row2">
+        <label>節目長度
+          <select id="length">
+            <option value="5">約 5 分鐘（約 1200 字）</option>
+            <option value="8" selected>約 8 分鐘（約 2000 字）</option>
+            <option value="12">約 12 分鐘（約 3000 字）</option>
+          </select>
+        </label>
+        <label>搞笑程度
+          <select id="humor">
+            <option value="1">輕鬆自然</option><option value="2" selected>有梗、互相吐槽</option><option value="3">超級搞笑</option>
+          </select>
+        </label>
+      </div>
+      <label style="flex-direction:row;align-items:center;gap:8px;font-weight:400">
+        <input type="checkbox" id="optCue" checked> 在台詞裡加上語氣提示，例如（聲音上揚）
+      </label>
+      <label style="flex-direction:row;align-items:center;gap:8px;font-weight:400">
+        <input type="checkbox" id="optZhuyin" checked> 容易唸錯的字加注音，例如 專ㄓㄨㄢ
+      </label>
+
+      <button type="submit" class="btn primary" id="genBtn">產生講稿</button>
+      <div class="status" id="genStatus" role="status"></div>
+
+      <div class="fallback" id="fallback" hidden>
+        <b>這個頁面現在不能直接呼叫 AI</b>
+        <span>可以複製下面的提示詞，貼到 Claude、ChatGPT 或 Gemini，再把結果貼回右邊的「編輯」框。</span>
+        <div class="actions"><button type="button" class="btn small" id="copyPrompt">複製提示詞</button></div>
+        <pre id="promptView"></pre>
+      </div>
+
+      <details class="tips">
+        <summary>學長姐講稿的寫法重點</summary>
+        <ul>
+          <li><b>自我介紹用名字的諧音梗</b>，像 <q>芷萱，止不住對你的懸念</q>，最後兩人一起說台呼：<q>合：歡迎收聽今天的不可不讀廣播電台</q>。</li>
+          <li><b>開場先聊生活小事</b>（天氣變熱、第一次合作會緊張），再自然帶到今天的主題。</li>
+          <li><b>兩個人要有不同個性</b>：一個說，一個接話或吐槽，例如 <q>你？可愛？我看是「可憐沒人愛」吧？</q></li>
+          <li><b>校園新聞講清楚三件事</b>：班級、姓名、成就（錄取的校系、證照、名次），最後補一句鼓勵。</li>
+          <li><b>用反應句讓對話有起伏</b>：<q>等一下…這真的是一年級能創造的成績嗎？</q></li>
+          <li><b>活動推廣要報時間地點</b>：<q>4月18號，早上9:00到下午3:30，就在四維高中的操場喔！</q></li>
+          <li><b>閱讀分享</b>先介紹分享的班級和書名，同學讀完心得後，兩位主持人各說一個自己最有感的觀點。</li>
+          <li><b>每個單元結尾都要轉場</b>：<q>我們下個單元見！</q>，並在講稿裡標出（轉場音）、（放歌）。</li>
+        </ul>
+      </details>
+    </form>
+
+    <!-- RIGHT: the script -->
+    <section class="panel" aria-labelledby="outTitle">
+      <div class="toolbar">
+        <h2 id="outTitle">講稿</h2>
+        <span class="badge" id="sampleBadge">範例</span>
+        <span class="sp"></span>
+        <button type="button" class="btn small" id="editBtn">編輯</button>
+        <button type="button" class="btn small" id="copyBtn">複製全文</button>
+        <button type="button" class="btn small" id="dlBtn" hidden>下載 .txt</button>
+        <button type="button" class="btn small" id="ttsBtn" hidden>▶ 試聽</button>
+        <button type="button" class="btn small" id="stopBtn" hidden>■ 停止</button>
+      </div>
+      <div class="stats" id="stats"></div>
+      <div class="script" id="script" aria-live="polite"></div>
+      <textarea class="edit" id="editor" hidden aria-label="編輯講稿"></textarea>
+      <div class="status" id="outStatus" role="status"></div>
+
+      <div class="eyebrow">請 AI 修改</div>
+      <div class="chips" id="chips">
+        <button type="button" class="chip">讓吐槽再多一點</button>
+        <button type="button" class="chip">新聞的部分講得更清楚</button>
+        <button type="button" class="chip">縮短成一半長度</button>
+        <button type="button" class="chip">兩人講話的比例平均一點</button>
+        <button type="button" class="chip">轉場再自然一點</button>
+      </div>
+      <form class="revise" id="reviseForm">
+        <input type="text" id="reviseInput" placeholder="例：海龜湯換一題更難的、結尾加一首歌">
+        <button type="submit" class="btn" id="reviseBtn">修改講稿</button>
+      </form>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const STORE = "fm-script-studio-v1";
+
+  // ---------- Segment presets (taken from the program's real rundown) ----------
+  const PRESETS = [
+    {kind:"intro", title:"開場・自我介紹", on:true,
+      hint:"今天想聊的生活小話題",
+      ph:"例：最近變天了、上體育課好熱；快要運動會了，一個想破紀錄、一個只想玩趣味競賽",
+      val:"最近天氣突然變熱；下禮拜就是運動會，小晴超期待趣味競賽，阿哲說要破 100 公尺紀錄"},
+    {kind:"news", title:"四維大小事", on:true,
+      hint:"校園新聞：班級、姓名、錄取校系、證照、比賽名次",
+      ph:"例：綜301 王小明 錄取東華大學民族語言與傳播學系，有工業電子丙級等三張證照",
+      val:"範例：游泳隊即將參加全中運；電機科在全國技能競賽北區分區賽拿下配管與暖氣第五名"},
+    {kind:"event", title:"活動推廣", on:true,
+      hint:"活動名稱、時間、地點、亮點",
+      ph:"例：四維春FUN園遊會，4/18 9:00–15:30，操場，40 個攤位、大隊接力",
+      val:"四維春FUN園遊會，4月18日 9:00 到 15:30，在操場，超過 40 個攤位，還有趣味競賽和大隊接力"},
+    {kind:"reading", title:"閱讀心得分享", on:true,
+      hint:"書名、分享的班級或同學、書的重點（同學的心得由他們自己讀）",
+      ph:"例：306班 分享《被討厭的勇氣》，重點是課題分離、活在當下",
+      val:"306班分享《被討厭的勇氣》，重點：課題分離、不活在別人的期待裡、活在當下"},
+    {kind:"corner", title:"小單元", on:true, type:"海龜湯推理遊戲",
+      hint:"內容或關鍵字",
+      ph:"例：海龜湯題目／想推坑的影集名稱和劇情／想分享的歌",
+      val:"出一題簡單的海龜湯，阿哲一直亂猜，最後帶出一個小道理"},
+    {kind:"outro", title:"結尾", on:true,
+      hint:"結尾要放的歌，或想說的話",
+      ph:"例：放〈Believer〉，提醒大家下週見",
+      val:"結尾放歌〈Believer〉"},
+  ];
+  const CORNER_TYPES = ["海龜湯推理遊戲","影集／電影推坑","歌曲分享","心理測驗","生活冷知識","自訂"];
+
+  let segs = [];
+  let script = "";
+  let isSample = true;
+  let lastPrompt = "";
+  let busy = null; // AbortController while generating
+
+  // ---------- Sample script shown before first generation ----------
+  const SAMPLE = `## 開場・自我介紹
+（開場音）
+小晴：哈囉～我是小晴，晴天的晴，帶給你一整天好心情！
+阿哲：大家好，我是阿哲，哲學的哲，今天也要用歪理說服你！
+合：歡迎收聽今天的不可不讀廣播電台！
+小晴：欸阿哲，最近是不是突然變好熱？我上體育課整個人快融化了～
+阿哲：對啊！而且下禮拜就是運動會了，我已經決定要在 100 公尺破世界紀錄。
+小晴：蛤？你以為你是奧運選手喔？（笑）
+阿哲：你等著看，到時候全校都會記得我的名字！
+小晴：好啦好啦，那就讓未來的世界紀錄保持人，帶我們進入下一個單元吧！
+（轉場音）
+## 四維大小事
+合：你所應該知道的事，都在本週的四維大小事！
+阿哲：……（按「產生講稿」看完整內容）`;
+
+  // ---------- Persistence (per-viewer convenience only) ----------
+  const FIELDS = ["station","aName","aPersona","aIntro","bName","bPersona","bIntro","length","humor"];
+  function save(){
+    try{
+      const f = {}; FIELDS.forEach(k => f[k] = $(k).value);
+      f.optCue = $("optCue").checked; f.optZhuyin = $("optZhuyin").checked;
+      localStorage.setItem(STORE, JSON.stringify({f, segs, script, isSample}));
+    }catch(e){}
+  }
+  function load(){
+    try{
+      const s = JSON.parse(localStorage.getItem(STORE) || "null");
+      if(!s) return false;
+      FIELDS.forEach(k => { if(s.f && s.f[k] != null) $(k).value = s.f[k]; });
+      if(s.f){ $("optCue").checked = !!s.f.optCue; $("optZhuyin").checked = !!s.f.optZhuyin; }
+      if(Array.isArray(s.segs) && s.segs.length) segs = s.segs;
+      if(typeof s.script === "string" && s.script){ script = s.script; isSample = !!s.isSample; }
+      return true;
+    }catch(e){ return false; }
+  }
+
+  // ---------- Segment list UI ----------
+  let uid = 0;
+  function fresh(){ return PRESETS.map(p => ({...p, id:"s"+(uid++)})); }
+  function renderSegs(){
+    const box = $("segs"); box.textContent = "";
+    segs.forEach((s, i) => {
+      const el = document.createElement("div");
+      el.className = "seg" + (s.on ? "" : " off");
+      const head = document.createElement("div"); head.className = "seg-head";
+      const cb = document.createElement("input"); cb.type = "checkbox"; cb.checked = s.on; cb.id = "on_"+s.id;
+      cb.setAttribute("aria-label","播出「"+s.title+"」");
+      cb.onchange = () => { s.on = cb.checked; renderSegs(); save(); };
+      const no = document.createElement("span"); no.className = "seg-no";
+      const t = document.createElement("input"); t.type = "text"; t.className = "seg-title"; t.value = s.title; t.id = "t_"+s.id;
+      t.setAttribute("aria-label","單元名稱");
+      t.oninput = () => { s.title = t.value; save(); };
+      const up = mk("button","mv","↑"); up.type="button"; up.title="往上移"; up.disabled = i===0;
+      up.onclick = () => { [segs[i-1],segs[i]] = [segs[i],segs[i-1]]; renderSegs(); save(); };
+      const dn = mk("button","mv","↓"); dn.type="button"; dn.title="往下移"; dn.disabled = i===segs.length-1;
+      dn.onclick = () => { [segs[i+1],segs[i]] = [segs[i],segs[i+1]]; renderSegs(); save(); };
+      head.append(cb,no,t,up,dn);
+      if(s.kind === "custom"){
+        const del = mk("button","mv","✕"); del.type="button"; del.title="刪除這個單元";
+        del.onclick = () => { segs.splice(i,1); renderSegs(); save(); };
+        head.append(del);
+      }
+      const body = document.createElement("div"); body.className = "seg-body";
+      if(s.kind === "corner"){
+        const sel = document.createElement("select"); sel.id = "ty_"+s.id; sel.setAttribute("aria-label","小單元類型");
+        CORNER_TYPES.forEach(o => { const op = document.createElement("option"); op.textContent = o; if(o===s.type) op.selected = true; sel.append(op); });
+        sel.onchange = () => { s.type = sel.value; save(); };
+        body.append(sel);
+      }
+      const lab = document.createElement("label");
+      const hint = mk("span","hint",s.hint || "內容或關鍵字");
+      const ta = document.createElement("textarea"); ta.id = "v_"+s.id; ta.value = s.val || ""; ta.placeholder = s.ph || "";
+      ta.oninput = () => { s.val = ta.value; save(); };
+      lab.append(hint, ta); body.append(lab);
+      el.append(head, body); box.append(el);
+    });
+  }
+  function mk(tag, cls, text){ const e = document.createElement(tag); e.className = cls; e.textContent = text; return e; }
+  $("addSeg").onclick = () => {
+    segs.push({kind:"custom", id:"s"+(uid++), title:"自訂單元", on:true, hint:"這個單元要聊什麼？", ph:"例：班際籃球賽戰況、畢業旅行回顧", val:""});
+    renderSegs(); save();
+  };
+  FIELDS.concat(["optCue","optZhuyin"]).forEach(k => $(k).addEventListener("change", save));
+  FIELDS.forEach(k => $(k).addEventListener("input", save));
+
+  // ---------- Prompt ----------
+  const hosts = () => ({A:$("aName").value.trim() || "主持人A", B:$("bName").value.trim() || "主持人B"});
+  function buildPrompt(){
+    const {A,B} = hosts();
+    const len = $("length").value;
+    const chars = {5:1200, 8:2000, 12:3000}[len];
+    const humor = {1:"輕鬆自然，偶爾開玩笑", 2:"有梗，兩人會互相吐槽、鬥嘴", 3:"非常搞笑，大量吐槽、誇張反應和笑點，但不失禮"}[$("humor").value];
+    const on = segs.filter(s => s.on);
+    const segText = on.map((s, i) => {
+      let kind = {intro:"開場與自我介紹", news:"校園新聞播報", event:"活動推廣", reading:"閱讀心得分享", corner:"小單元："+(s.type||""), outro:"節目結尾", custom:"自訂單元"}[s.kind];
+      return `${i+1}. 單元名稱「${s.title}」（${kind}）\n   學生提供的內容／關鍵字：${(s.val||"").trim() || "（未提供，請自行發揮合理、一般性的內容）"}`;
+    }).join("\n");
+    return `你是一位幫高中校園廣播社寫講稿的助手。請為「${$("station").value.trim() || "校園廣播電台"}」寫一份兩位主持人的對話講稿，讓高中生可以直接拿去錄音。
+
+【主持人】
+- ${A}：個性「${$("aPersona").value}」。自我介紹梗：${$("aIntro").value.trim() || "請用名字的諧音或字義想一句押韻、好記的自我介紹"}
+- ${B}：個性「${$("bPersona").value}」。自我介紹梗：${$("bIntro").value.trim() || "請用名字的諧音或字義想一句押韻、好記的自我介紹"}
+
+【單元順序】
+${segText}
+
+【風格】
+- 總長度約 ${chars} 個中文字（約 ${len} 分鐘）。依單元內容多寡分配篇幅。
+- 語氣：${humor}。用台灣高中生自然的口語（可以用「欸」「蛤」「齁」「啦」「喔～」），句子短、好唸。
+- 兩人輪流說話，一人一句或兩句，不要一個人講太長；兩人的台詞量大致平均。
+- 開場：先各自自我介紹，再由「合」一起說台呼「歡迎收聽今天的${$("station").value.trim() || "廣播電台"}」，接著聊一個生活小話題，再自然帶進下一個單元。
+- 校園新聞：清楚講出班級、姓名、成就（錄取校系、證照、名次），另一位主持人用驚訝或佩服的反應句接話，最後加一句鼓勵。
+- 活動推廣：一定要清楚報出活動名稱、時間、地點和亮點。
+- 閱讀心得分享：主持人先介紹分享的班級／同學和書名，然後放一行「（同學朗讀心得）」讓同學自己讀，之後兩位主持人各說一個自己最有感的觀點。
+- 每個單元結尾用一句話轉場到下一個單元（例如「我們下個單元見！」）。最後一個單元要正式跟聽眾道別。
+- 只能使用學生提供的事實，不要捏造真實的人名、成績、日期或數字；資料不夠時用一般性的說法帶過。
+${$("optCue").checked ? "- 在需要的地方，於台詞中用全形括號加語氣或動作提示，例如（聲音上揚）（笑）（激動）。\n" : ""}${$("optZhuyin").checked ? "- 容易唸錯或破音字，在字後面直接加注音，例如「專ㄓㄨㄢ送快樂」「走ㄗㄡˇ不出來」，每個單元最多一兩處。\n" : ""}
+【輸出格式】（非常重要，請嚴格遵守，不要有任何前言或說明）
+- 每個單元開頭獨立一行：## 單元名稱
+- 音效或動作獨立一行，用全形括號：（開場音）（轉場音）（放歌：歌名）
+- 台詞每行一句，格式：名字：台詞。兩人一起說時用「合：」。
+- 第一行是「## ${on[0] ? on[0].title : "開場"}」，下一行是「（開場音）」。單元之間放「（轉場音）」。
+- 不要用 Markdown 粗體、項目符號或表格。`;
+  }
+
+  // ---------- Script rendering ----------
+  const SPEAKER = /^([^\s：:（(]{1,12})\s*[：:]\s*(.*)$/;
+  function parse(text){
+    const {A,B} = hosts();
+    return text.split(/\r?\n/).map(raw => {
+      const l = raw.trim();
+      if(!l) return null;
+      if(/^#{1,3}\s*/.test(l)) return {t:"sec", text:l.replace(/^#{1,3}\s*/,"").replace(/^\*+/,"")};
+      if(/^\*[^*]/.test(l)) return {t:"sec", text:l.slice(1).trim()};
+      if(/^[（(].*[）)]$/.test(l)) return {t:"cue", text:l};
+      const m = l.match(SPEAKER);
+      if(m){
+        const who = m[1];
+        const cls = who === A ? "a" : who === B ? "b" : who === "合" ? "both" : "other";
+        return {t:"ln", who, cls, text:m[2]};
+      }
+      return {t:"note", text:l};
+    }).filter(Boolean);
+  }
+  function render(){
+    const box = $("script"); box.textContent = "";
+    $("sampleBadge").hidden = !isSample;
+    if(!script.trim()){
+      box.append(mk("p","empty","左邊填好節目流程，按「產生講稿」，講稿會一句一句出現在這裡。"));
+      $("stats").textContent = ""; return;
+    }
+    parse(script).forEach((p, i) => {
+      if(p.t === "sec") box.append(mk("div","sec",p.text));
+      else if(p.t === "cue") box.append(mk("div","cue",p.text));
+      else if(p.t === "note") box.append(mk("div","note",p.text));
+      else {
+        const r = document.createElement("div"); r.className = "ln "+p.cls; r.dataset.i = i;
+        r.append(mk("span","who",p.who), mk("span","txt",p.text)); box.append(r);
+      }
+    });
+    renderStats();
+  }
+  function renderStats(){
+    const {A,B} = hosts();
+    const lines = parse(script).filter(p => p.t === "ln");
+    const count = (w) => lines.filter(p => p.who === w).reduce((n,p) => n + p.text.replace(/[（(][^）)]*[）)]/g,"").length, 0);
+    const total = lines.reduce((n,p) => n + p.text.replace(/[（(][^）)]*[）)]/g,"").length, 0);
+    const a = count(A), b = count(B);
+    const mins = total / 240; // about 4 Chinese characters per second on air
+    const st = $("stats"); st.textContent = "";
+    const item = (label, val) => { const s = document.createElement("span"); s.append(label+" "); const v = document.createElement("b"); v.textContent = val; s.append(v); st.append(s); };
+    item("台詞字數", total.toLocaleString());
+    item("預估播出", mins < 1 ? "不到 1 分鐘" : `${Math.floor(mins)} 分 ${String(Math.round((mins%1)*60)).padStart(2,"0")} 秒`);
+    if(a + b > 0){
+      const pa = Math.round(a/(a+b)*100);
+      item(`${A} / ${B}`, `${pa}% / ${100-pa}%`);
+      const bar = document.createElement("span"); bar.className = "balance"; bar.title = "兩位主持人的台詞比例";
+      const s1 = document.createElement("span"); s1.style.width = pa+"%";
+      const s2 = document.createElement("span"); s2.style.width = (100-pa)+"%";
+      bar.append(s1,s2); st.append(bar);
+    }
+  }
+
+  // ---------- Edit mode ----------
+  let editing = false;
+  $("editBtn").onclick = () => {
+    editing = !editing;
+    if(editing){ $("editor").value = script; }
+    else { script = $("editor").value; isSample = false; save(); render(); }
+    $("editor").hidden = !editing; $("script").hidden = editing;
+    $("editBtn").textContent = editing ? "完成編輯" : "編輯";
+  };
+  $("editor").addEventListener("input", () => { script = $("editor").value; save(); });
+
+  // ---------- Copy ----------
+  async function copyText(text, btn, okLabel){
+    const old = btn.textContent;
+    try{ await navigator.clipboard.writeText(text); btn.textContent = okLabel; }
+    catch(e){
+      const ta = $("editor"); const wasHidden = ta.hidden;
+      if(wasHidden){ $("outStatus").textContent = "無法自動複製，請按「編輯」後全選文字複製。"; return; }
+      ta.focus(); ta.select(); btn.textContent = "已選取，請按 Ctrl+C";
+    }
+    setTimeout(() => btn.textContent = old, 1800);
+  }
+  const plain = () => (editing ? $("editor").value : script).replace(/^##\s*/gm, "*");
+  $("copyBtn").onclick = () => copyText(plain(), $("copyBtn"), "已複製");
+  $("copyPrompt").onclick = () => copyText(lastPrompt, $("copyPrompt"), "已複製提示詞");
+
+  // ---------- Claude ----------
+  let samplefn = null;
+  const ERR = {
+    not_granted:"你沒有允許使用 Claude，所以無法產生。可以改用下方的提示詞。",
+    rate_limited:"使用太頻繁了，請等一分鐘再試。",
+    prompt_too_large:"內容太長了，請刪減一些關鍵字或講稿。",
+    refused:"AI 拒絕了這個內容，請調整關鍵字後再試。",
+    session_expired:"登入已過期，請重新整理頁面。",
+  };
+  const errText = (e) => ERR[e && e.code] || "產生時發生問題，請再試一次。";
+  function showFallback(){
+    lastPrompt = buildPrompt();
+    $("promptView").textContent = lastPrompt;
+    $("fallback").hidden = false;
+  }
+  function setBusy(on){
+    $("lamp").classList.toggle("live", on);
+    $("genBtn").textContent = on ? "■ 停止產生" : "產生講稿";
+    $("reviseBtn").disabled = on;
+  }
+  async function run(input, statusEl, keepOld){
+    if(busy){ busy.abort(); return; }
+    if(!samplefn){ showFallback(); statusEl.textContent = "請用下方的提示詞到其他 AI 產生。"; return; }
+    if(editing) $("editBtn").click();
+    const before = script, beforeSample = isSample;
+    busy = new AbortController(); setBusy(true);
+    statusEl.className = "status"; statusEl.textContent = "AI 正在構思講稿…（大約 20–60 秒）";
+    try{
+      const {text, truncated} = await samplefn(input, {
+        signal: busy.signal, cache:false,
+        onText: ({text}) => { statusEl.textContent = "寫稿中…"; script = text; isSample = false; render(); },
+      });
+      script = text.trim(); isSample = false; render(); save();
+      statusEl.textContent = truncated ? "講稿太長被截斷了，可以選短一點的長度再試。" : "完成！可以直接編輯，或在下方請 AI 修改。";
+    }catch(e){
+      if(e && e.code === "cancelled"){ statusEl.textContent = "已停止。"; if(e.text){ script = e.text; render(); save(); } }
+      else{
+        if(!keepOld || !e.text){ script = before; isSample = beforeSample; render(); }
+        statusEl.className = "status err"; statusEl.textContent = errText(e);
+        if(e && (e.code === "not_granted" || e.code === "sampling_disabled" || e.code === "capability_disabled")) showFallback();
+      }
+    }finally{ busy = null; setBusy(false); }
+  }
+  $("form").addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    if(!segs.some(s => s.on)){ $("genStatus").className = "status err"; $("genStatus").textContent = "請至少勾選一個單元。"; return; }
+    lastPrompt = buildPrompt();
+    run(lastPrompt, $("genStatus"), false);
+  });
+  function revise(instr){
+    if(!instr.trim()) return;
+    if(!script.trim() || isSample){ $("outStatus").className = "status err"; $("outStatus").textContent = "請先產生一份講稿。"; return; }
+    const input = `下面是一份校園廣播的雙主持人講稿。請依照修改要求改寫，輸出完整的新講稿，維持原本的格式（## 單元名稱、（音效）、名字：台詞），不要加任何說明。
+
+【修改要求】${instr}
+
+【原本的講稿】
+${editing ? $("editor").value : script}`;
+    lastPrompt = input;
+    run(input, $("outStatus"), true);
+  }
+  $("reviseForm").addEventListener("submit", (ev) => { ev.preventDefault(); revise($("reviseInput").value); });
+  $("chips").addEventListener("click", (ev) => { const c = ev.target.closest(".chip"); if(c) revise(c.textContent); });
+
+  // ---------- Download & listen (optional capabilities) ----------
+  let dl = null, tts = null;
+  $("dlBtn").onclick = async () => {
+    try{
+      const name = ($("station").value.trim() || "廣播講稿") + "_講稿.txt";
+      await dl.save({filename:name, data:"﻿" + plain().replace(/\n/g,"\r\n")});
+      $("outStatus").className = "status"; $("outStatus").textContent = "已下載。";
+    }catch(e){ if(e && e.code === "unavailable") $("dlBtn").hidden = true; }
+  };
+  $("ttsBtn").onclick = () => {
+    const {A,B} = hosts();
+    const rows = parse(script).map((p,i) => ({p,i})).filter(x => x.p.t === "ln");
+    if(!rows.length) return;
+    const lines = rows.map(({p,i}) => ({
+      id:String(i), language:"zh-TW",
+      text:p.text.replace(/[（(][^）)]*[）)]/g,"").replace(/[ㄅ-ㄩˊˇˋ˙]+/g,"").slice(0,2000) || "…",
+      voice: p.who === A ? "airy" : p.who === B ? "rounded" : "buttery",
+    }));
+    tts.speak(lines).catch(e => { if(e && e.code === "not_granted") $("ttsBtn").hidden = true; });
+  };
+  $("stopBtn").onclick = () => { try{ tts && tts.stop(); }catch(e){} };
+
+  // ---------- Boot ----------
+  if(!load()){ segs = fresh(); script = SAMPLE; isSample = true; }
+  uid = segs.length + 100;
+  renderSegs(); render();
+  if(typeof claude !== "undefined" && claude.use){
+    claude.use("sample").then(s => { samplefn = s; if(!s) showFallback(); }).catch(() => showFallback());
+    claude.use("downloads").then(d => { if(d){ dl = d; $("dlBtn").hidden = false; } }).catch(()=>{});
+    claude.use("tts").then(t => {
+      if(!t) return; tts = t; $("ttsBtn").hidden = false;
+      t.onState(({state}) => { const on = state === "speaking" || state === "starting" || state === "paused"; $("stopBtn").hidden = !on; $("ttsBtn").hidden = on;
+        if(!on) document.querySelectorAll(".ln.speaking").forEach(e => e.classList.remove("speaking")); });
+      t.onLine(({id}) => { document.querySelectorAll(".ln.speaking").forEach(e => e.classList.remove("speaking"));
+        const el = document.querySelector(`.ln[data-i="${id}"]`); if(el){ el.classList.add("speaking"); el.scrollIntoView({block:"nearest"}); } });
+    }).catch(()=>{});
+  } else {
+    showFallback();
+  }
+})();
+</script>
+</body>
+</html>
